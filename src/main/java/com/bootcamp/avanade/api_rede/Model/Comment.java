@@ -1,4 +1,4 @@
-package com.bootcamp.avanade.api_rede.Model;
+package com.bootcamp.avanade.api_rede.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
