@@ -1,6 +1,6 @@
 package com.bootcamp.avanade.api_rede.repository;
 
-import com.bootcamp.avanade.api_rede.Model.User;
+import com.bootcamp.avanade.api_rede.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
