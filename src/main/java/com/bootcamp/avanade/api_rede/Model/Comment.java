@@ -3,7 +3,8 @@ package com.bootcamp.avanade.api_rede.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Data
@@ -21,5 +22,10 @@ public class Comment {
     private User user;
 
     private String content;
-    private Instant createdAt;
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void createdAt() {
+        this.createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+    }
 }

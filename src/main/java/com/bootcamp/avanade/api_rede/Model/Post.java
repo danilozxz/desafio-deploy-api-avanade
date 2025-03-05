@@ -6,6 +6,7 @@ import lombok.Data;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Entity(name = "tb_posts")
 @Data
@@ -22,6 +23,9 @@ public class Post {
     private String image;
     private LocalDateTime publishedAt;
     private Instant updatedAt;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 
     @PrePersist
     public void publishedAt() {
