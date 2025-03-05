@@ -12,6 +12,7 @@ public interface PostMapper {
     
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "comments", ignore = true)
     @Mapping(target = "publishedAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     Post map(PostCreateDTO postCreateDTO);
