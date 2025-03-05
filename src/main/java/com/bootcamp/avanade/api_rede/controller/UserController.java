@@ -1,5 +1,6 @@
 package com.bootcamp.avanade.api_rede.controller;
 
+import com.bootcamp.avanade.api_rede.dto.user.UserResponseDTO;
 import com.bootcamp.avanade.api_rede.model.User;
 import com.bootcamp.avanade.api_rede.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +20,16 @@ public class UserController {
     private UserService service;
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
         var user = service.findById(id);
-        return ResponseEntity.ok().body(user);
+        var response = UserResponseDTO.from(user);
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User> createUser(@RequestBody User userToCreate) {
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody User userToCreate) {
         var userCreated = service.create(userToCreate);
-
-        return ResponseEntity.ok().body(userCreated);
+        var response = UserResponseDTO.from(userCreated);
+        return ResponseEntity.ok().body(response);
     }
 }
