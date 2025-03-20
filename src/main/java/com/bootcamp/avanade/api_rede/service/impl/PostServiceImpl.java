@@ -1,5 +1,7 @@
 package com.bootcamp.avanade.api_rede.service.impl;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -55,6 +57,7 @@ public class PostServiceImpl implements PostService {
     public PostResponseDTO update(PostUpdateDTO postUpdateDTO, Long id) {
         Post post = postRepository.findById(id).orElseThrow(NoSuchElementException::new);
         postMapper.updatePost(postUpdateDTO, post);
+        post.setUpdatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 
         return postMapper.toPostResponseDTO(postRepository.save(post));
     }
