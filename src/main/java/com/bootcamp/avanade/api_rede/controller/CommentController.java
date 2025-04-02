@@ -2,6 +2,7 @@ package com.bootcamp.avanade.api_rede.controller;
 
 import java.util.List;
 
+import com.bootcamp.avanade.api_rede.controller.openAPI.CommentControllerOpenAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +21,7 @@ import com.bootcamp.avanade.api_rede.service.CommentService;
 
 @RestController
 @RequestMapping("/comments")
-public class CommentController {
+public class CommentController implements CommentControllerOpenAPI {
     
     @Autowired
     private CommentService commentService;
@@ -34,13 +35,13 @@ public class CommentController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/list")
+    @GetMapping("")
     public ResponseEntity<List<CommentResponseDTO>> findAll() {
         var listComments = commentService.findAll();
         return ResponseEntity.ok().body(listComments);
     }
 
-    @PostMapping("/add")
+    @PostMapping("")
     public ResponseEntity<CommentResponseDTO> create(@RequestBody CommentCreateDTO commentToCreateDTO) {
         var postCreated = commentService.create(commentToCreateDTO);
         var response = CommentResponseDTO.from(postCreated);

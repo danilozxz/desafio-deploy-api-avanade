@@ -2,6 +2,7 @@ package com.bootcamp.avanade.api_rede.controller;
 
 import java.util.List;
 
+import com.bootcamp.avanade.api_rede.controller.openAPI.PostControllerOpenAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +22,7 @@ import com.bootcamp.avanade.api_rede.service.PostService;
 
 @RestController
 @RequestMapping("/posts")
-public class PostController {
+public class PostController implements PostControllerOpenAPI {
     
     @Autowired
     private PostService service;
@@ -33,13 +34,13 @@ public class PostController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/list")
+    @GetMapping("")
     public ResponseEntity<List<PostResponseDTO>> findAll() {
         var listPosts = service.findAll();
         return ResponseEntity.ok().body(listPosts);
     }
 
-    @PostMapping("/add")
+    @PostMapping("")
     public ResponseEntity<PostResponseDTO> createPost(@RequestBody PostCreateDTO postToCreate) {
         var createdPost = service.create(postToCreate);
         var response = PostResponseDTO.from(createdPost);
@@ -52,7 +53,7 @@ public class PostController {
         service.delete(id);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<PostResponseDTO> updatePost(@RequestBody PostUpdateDTO postUpdateDTO, @PathVariable Long id) {
         var postUpdated = service.update(postUpdateDTO, id);
         return ResponseEntity.ok().body(postUpdated);

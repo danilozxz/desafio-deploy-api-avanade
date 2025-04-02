@@ -1,5 +1,6 @@
 package com.bootcamp.avanade.api_rede.controller;
 
+import com.bootcamp.avanade.api_rede.controller.openAPI.UserControllerOpenAPI;
 import com.bootcamp.avanade.api_rede.dto.user.UserCreateDTO;
 import com.bootcamp.avanade.api_rede.dto.user.UserResponseDTO;
 import com.bootcamp.avanade.api_rede.dto.user.UserUpdateDTO;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController implements UserControllerOpenAPI {
 
     @Autowired
     private UserService service;
@@ -32,13 +33,13 @@ public class UserController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/list")
+    @GetMapping("")
     public ResponseEntity<List<UserResponseDTO>> findAll() {
         var listUsers = service.findAll();
         return ResponseEntity.ok().body(listUsers);
     }
 
-    @PostMapping("/add")
+    @PostMapping("")
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserCreateDTO userToCreate) {
         var userCreated = service.create(userToCreate);
         var response = UserResponseDTO.from(userCreated);
@@ -50,7 +51,7 @@ public class UserController {
         service.delete(id);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UserUpdateDTO userUpdateDTO, @PathVariable Long id) {
         var userUpdated = service.update(userUpdateDTO, id);
 
