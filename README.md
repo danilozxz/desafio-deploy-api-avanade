@@ -3,7 +3,7 @@
 </p>
 
 
-# Rede API
+# Decola.feed
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
@@ -12,7 +12,7 @@
 
 Esse projeto é uma API RestFull contruída com **Java, Spring Boot, PostgresSQL como banco de dados, Railway para hospedagem e Swagger para documentar e consumir a API.**
 
-A API que faz parte de um desafio do programa **Decola Tech 2025** da Avanade, simula a relação entre três entidades de uma rede social: **Usuário, Postagem e Comentário**
+A API foi criada como parte do desafio do programa Decola Tech 2025 da Avanade e simula a dinâmica de uma rede social corporativa, permitindo a interação entre três entidades principais: **Usuário, Postagem e Comentário**.
 
 ## 📍API Endpoints
 A API fornece os seguintes endpoints:
@@ -21,13 +21,13 @@ A API fornece os seguintes endpoints:
 ```markdown
 GET /users/{id} - Retorna o usuário pelo ID especificado
 
-GET /users/list - Retorna a lista de usuários
-
-POST /users/add - Registra um novo usuário
-
-PUT /users/update/{id} - Atualiza o usuário pelo ID especificado
+PUT /users/{id} - Atualiza o usuário pelo ID especificado
 
 DELETE /users/{id} - Deleta o usuário pelo ID especificado
+
+GET /users - Retorna a lista de usuários
+
+POST /users - Registra um novo usuário
 ```
 
 #### Postagem
@@ -35,13 +35,13 @@ DELETE /users/{id} - Deleta o usuário pelo ID especificado
 ```markdown
 GET /posts/{id} - Retorna o post pelo ID especificado
 
-GET /posts/list - Retorna a lista de posts
-
-POST /posts/add - Registra um novo post
-
-PUT /posts/update/{id} - Atualiza o post pelo ID especificado
+PUT /posts/{id} - Atualiza o post pelo ID especificado
 
 DELETE /post/{id} - Deleta o post pelo ID especificado
+
+GET /posts - Retorna a lista de posts
+
+POST /posts - Registra um novo post
 ```
 
 #### Comentário
@@ -49,13 +49,13 @@ DELETE /post/{id} - Deleta o post pelo ID especificado
 ```markdown
 GET /comments/{id} - Retorna o comentário pelo ID especificado
 
-GET /comments/list - Retorna a lista de comentários
-
-POST /comments/add - Registra um novo comentário
-
 PUT /comments/{id} - Atualiza o comentário pelo ID especificado
 
 DELETE /comments/{id} - Deleta o comentário pelo ID especificado
+
+GET /comments - Retorna a lista de comentários
+
+POST /comments - Registra um novo comentário
 ```
 
 ## 👉Exemplos de Get e Post da entidade User 
@@ -64,7 +64,7 @@ DELETE /comments/{id} - Deleta o comentário pelo ID especificado
 **RESPONSE**
 ```json
 {
-  "id": 1
+  "id": 1,
   "username": "Danilo Fernandes",
   "email": "exemplo@gmail.com",
   "createdAt": "2025-03-19T19:28:29.456Z"
