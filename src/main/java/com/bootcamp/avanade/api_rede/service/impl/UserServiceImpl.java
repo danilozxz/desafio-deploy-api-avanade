@@ -3,18 +3,17 @@ package com.bootcamp.avanade.api_rede.service.impl;
 import com.bootcamp.avanade.api_rede.dto.user.UserCreateDTO;
 import com.bootcamp.avanade.api_rede.dto.user.UserResponseDTO;
 import com.bootcamp.avanade.api_rede.dto.user.UserUpdateDTO;
+import com.bootcamp.avanade.api_rede.exceptions.user.UserNotFoundException;
+import com.bootcamp.avanade.api_rede.exceptions.user.UsernameNullException;
 import com.bootcamp.avanade.api_rede.mapper.UserMapper;
 import com.bootcamp.avanade.api_rede.model.User;
 import com.bootcamp.avanade.api_rede.repository.UserRepository;
 import com.bootcamp.avanade.api_rede.service.UserService;
 
-import jakarta.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,10 +23,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public User findById(Long id) {
-        return repository.findById(id).orElseThrow(NoSuchElementException::new);
+        return findUserById(id);
     }
 
     @Override
@@ -37,6 +38,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserCreateDTO userToCreate) {
+        validateUsername(userToCreate.username());
+
         User user = userMapper.map(userToCreate);
         return repository.save(user);
     }
@@ -44,9 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) {
 
-        if (!repository.existsById(id)) {
-            throw new EntityNotFoundException("Usuário com o ID especificado não encontrado");
-        }
+        findUserById(id);
 
         repository.deleteById(id);
     }
@@ -54,10 +55,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO update(UserUpdateDTO userToUpdate, Long id) {
 
-        User user = repository.findById(id).orElseThrow(NoSuchElementException::new);
+        validateUsername(userToUpdate.username());
+
+        User user = findUserById(id);
 
         userMapper.updateUser(userToUpdate, user);
 
         return userMapper.toUserResponseDTO(repository.save(user));
+    }
+
+    public void validateUsername(String username) {
+        if(username == null || username.isEmpty()) {
+            throw new UsernameNullException();
+        }
+    }
+
+    public User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 }
