@@ -5,6 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.bootcamp.avanade.api_rede.exceptions.post.PostNotFoundException;
+import com.bootcamp.avanade.api_rede.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +28,15 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private PostRepository postRepository;
 
-    @Autowired 
-    private UserRepository userRepository;
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
     @Autowired 
     private PostMapper postMapper;
     
     @Override
     public Post findById(Long id) {
-        return postRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return findPostById(id);
     }
 
     @Override
@@ -44,8 +46,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post create(PostCreateDTO postCreateDTO) {
-        User user = userRepository.findById(postCreateDTO.userId())
-                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
+        User user = userServiceImpl.findUserById(postCreateDTO.userId());
 
         Post post = postMapper.map(postCreateDTO);
         post.setUser(user);
@@ -55,7 +56,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDTO update(PostUpdateDTO postUpdateDTO, Long id) {
-        Post post = postRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        Post post = findPostById(id);
         postMapper.updatePost(postUpdateDTO, post);
         post.setUpdatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 
@@ -64,12 +65,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(Long id) {
-
-        if(!postRepository.existsById(id)) {
-            throw new EntityNotFoundException("Usuário com o ID especificado não encontrado");
-        }
-
+        findPostById(id);
         postRepository.deleteById(id);
     }
+
+    public Post findPostById (Long id) {
+        return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
+    }
+
     
 }
