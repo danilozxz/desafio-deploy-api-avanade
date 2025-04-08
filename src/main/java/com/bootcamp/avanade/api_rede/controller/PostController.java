@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bootcamp.avanade.api_rede.controller.openAPI.PostControllerOpenAPI;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,12 +46,13 @@ public class PostController implements PostControllerOpenAPI {
         var createdPost = service.create(postToCreate);
         var response = PostResponseDTO.from(createdPost);
 
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")

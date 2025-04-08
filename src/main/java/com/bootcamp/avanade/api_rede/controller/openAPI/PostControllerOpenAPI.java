@@ -24,7 +24,7 @@ public interface PostControllerOpenAPI {
     ResponseEntity<PostResponseDTO> createPost(PostCreateDTO postToCreate);
 
     @Operation(summary = "Deletar post pelo ID")
-    void deleteById(Long id);
+    ResponseEntity<Void> deleteById(Long id);
 
     @Operation(summary = "Atualizar post")
     ResponseEntity<PostResponseDTO> updatePost(PostUpdateDTO postUpdateDTO, Long id);

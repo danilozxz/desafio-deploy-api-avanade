@@ -24,7 +24,7 @@ public interface CommentControllerOpenAPI {
     ResponseEntity<CommentResponseDTO> create(CommentCreateDTO commentToCreateDTO);
 
     @Operation(summary = "Deletar comentário pelo ID")
-    void delete(@PathVariable Long id);
+    ResponseEntity<Void> delete(@PathVariable Long id);
 
     @Operation(summary = "Atualizar comentário")
     ResponseEntity<CommentResponseDTO> update(CommentUpdateDTO commentUpdateDTO, Long id);

@@ -22,7 +22,7 @@ public interface UserControllerOpenAPI {
     ResponseEntity<UserResponseDTO> createUser(UserCreateDTO userToCreate);
 
     @Operation(summary = "Deletar usuário pelo ID")
-    void deleteById(Long id);
+    ResponseEntity<Void> deleteById(Long id);
 
     @Operation(summary = "Atualizar usuário")
     ResponseEntity<UserResponseDTO> updateUser(UserUpdateDTO userUpdateDTO, Long id);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bootcamp.avanade.api_rede.controller.openAPI.CommentControllerOpenAPI;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +47,7 @@ public class CommentController implements CommentControllerOpenAPI {
         var postCreated = commentService.create(commentToCreateDTO);
         var response = CommentResponseDTO.from(postCreated);
 
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
@@ -57,7 +58,8 @@ public class CommentController implements CommentControllerOpenAPI {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id){
         commentService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
