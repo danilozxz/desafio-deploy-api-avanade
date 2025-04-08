@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.bootcamp.avanade.api_rede.exceptions.post.PostNotFoundException;
+import com.bootcamp.avanade.api_rede.exceptions.post.PostNullException;
 import com.bootcamp.avanade.api_rede.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post create(PostCreateDTO postCreateDTO) {
+        validatePost(postCreateDTO.description(), postCreateDTO.image());
         User user = userServiceImpl.findUserById(postCreateDTO.userId());
 
         Post post = postMapper.map(postCreateDTO);
@@ -56,6 +58,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDTO update(PostUpdateDTO postUpdateDTO, Long id) {
+        validatePost(postUpdateDTO.description());
         Post post = findPostById(id);
         postMapper.updatePost(postUpdateDTO, post);
         post.setUpdatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
@@ -73,5 +76,15 @@ public class PostServiceImpl implements PostService {
         return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
     }
 
-    
+    public void validatePost(String description, String image) {
+        if((description == null || description.isEmpty()) && (image == null || image.isEmpty())) {
+            throw new PostNullException();
+        }
+    }
+
+    public void validatePost(String description) {
+        if(description == null || description.isEmpty()) {
+            throw new PostNullException();
+        }
+    }
 }
