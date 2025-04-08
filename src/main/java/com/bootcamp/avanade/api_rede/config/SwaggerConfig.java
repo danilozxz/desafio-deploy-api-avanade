@@ -31,7 +31,8 @@ public class SwaggerConfig {
                         Arrays.asList(
                                 new Tag().name("User").description("Requisições entidade User"),
                                 new Tag().name("Post").description("Requisições da entidade Post"),
-                                new Tag().name("Comment").description("Requisições da entidade Comment")
+                                new Tag().name("Comment").description("Requisições da entidade Comment"),
+                                new Tag().name("Authentication").description("Requisições para registro e login de usuário")
                         )
                 );
     }
