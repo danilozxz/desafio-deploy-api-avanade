@@ -1,8 +1,8 @@
 package com.bootcamp.avanade.api_rede.service.impl;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
+import com.bootcamp.avanade.api_rede.exceptions.comment.CommentNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,7 @@ import com.bootcamp.avanade.api_rede.model.Comment;
 import com.bootcamp.avanade.api_rede.model.Post;
 import com.bootcamp.avanade.api_rede.model.User;
 import com.bootcamp.avanade.api_rede.repository.CommentRepository;
-import com.bootcamp.avanade.api_rede.repository.PostRepository;
-import com.bootcamp.avanade.api_rede.repository.UserRepository;
 import com.bootcamp.avanade.api_rede.service.CommentService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -30,14 +26,14 @@ public class CommentServiceImpl implements CommentService {
     private CommentMapper commentMapper;
 
     @Autowired
-    private UserRepository userRepository;
+    private PostServiceImpl postServiceImpl;
 
     @Autowired
-    private PostRepository postRepository;
+    private UserServiceImpl userServiceImpl;
 
     @Override
     public Comment findById(Long id) {
-        return commentRepository.findById(id).orElseThrow((NoSuchElementException::new));
+        return findCommentById(id);
     }
 
     @Override
@@ -47,11 +43,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment create(CommentCreateDTO commentCreateDTO) {
-        User user = userRepository.findById(commentCreateDTO.userId())
-                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
+        User user = userServiceImpl.findUserById(commentCreateDTO.userId());
 
-        Post post = postRepository.findById(commentCreateDTO.postId())
-                .orElseThrow(() -> new NoSuchElementException("Postagem não encontrada"));
+        Post post = postServiceImpl.findPostById(commentCreateDTO.postId());
 
         Comment comment = commentMapper.map(commentCreateDTO);
         comment.setUser(user);
@@ -62,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentResponseDTO update(CommentUpdateDTO commentUpdateDTO, Long id) {
-        Comment comment = commentRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        Comment comment = findCommentById(id);
         commentMapper.updateComment(commentUpdateDTO, comment);
 
         return commentMapper.toCommentResponseDTO(commentRepository.save(comment));
@@ -70,11 +64,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void delete(Long id) {
-
-        if(!commentRepository.existsById(id)) {
-            throw new EntityNotFoundException("Comentário com o ID especificado não encontrado");
-        }
+        findCommentById(id);
         commentRepository.deleteById(id);
+    }
+
+    private Comment findCommentById(Long id) {
+        return commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
     }
 
 }
