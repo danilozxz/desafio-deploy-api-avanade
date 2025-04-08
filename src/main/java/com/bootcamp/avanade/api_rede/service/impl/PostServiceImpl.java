@@ -3,11 +3,9 @@ package com.bootcamp.avanade.api_rede.service.impl;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import com.bootcamp.avanade.api_rede.exceptions.post.PostNotFoundException;
 import com.bootcamp.avanade.api_rede.exceptions.post.PostNullException;
-import com.bootcamp.avanade.api_rede.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +16,7 @@ import com.bootcamp.avanade.api_rede.mapper.PostMapper;
 import com.bootcamp.avanade.api_rede.model.Post;
 import com.bootcamp.avanade.api_rede.model.User;
 import com.bootcamp.avanade.api_rede.repository.PostRepository;
-import com.bootcamp.avanade.api_rede.repository.UserRepository;
 import com.bootcamp.avanade.api_rede.service.PostService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class PostServiceImpl implements PostService {
