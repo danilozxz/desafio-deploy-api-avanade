@@ -3,6 +3,7 @@ package com.bootcamp.avanade.api_rede.service.impl;
 import java.util.List;
 
 import com.bootcamp.avanade.api_rede.exceptions.comment.CommentNotFoundException;
+import com.bootcamp.avanade.api_rede.exceptions.comment.ContentNullException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,8 +45,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment create(CommentCreateDTO commentCreateDTO) {
         User user = userServiceImpl.findUserById(commentCreateDTO.userId());
-
         Post post = postServiceImpl.findPostById(commentCreateDTO.postId());
+
+        validateContent(commentCreateDTO.content());
 
         Comment comment = commentMapper.map(commentCreateDTO);
         comment.setUser(user);
@@ -56,6 +58,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentResponseDTO update(CommentUpdateDTO commentUpdateDTO, Long id) {
+        validateContent(commentUpdateDTO.content());
+
         Comment comment = findCommentById(id);
         commentMapper.updateComment(commentUpdateDTO, comment);
 
@@ -70,6 +74,12 @@ public class CommentServiceImpl implements CommentService {
 
     private Comment findCommentById(Long id) {
         return commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
+    }
+
+    private void validateContent(String comment) {
+        if(comment == null || comment.isEmpty()) {
+            throw new ContentNullException();
+        }
     }
 
 }
