@@ -18,9 +18,6 @@ public interface UserControllerOpenAPI {
     @Operation(summary = "Listar todos usuários")
     ResponseEntity<List<UserResponseDTO>> findAll();
 
-    @Operation(summary = "Criar novo usuário")
-    ResponseEntity<UserResponseDTO> createUser(UserCreateDTO userToCreate);
-
     @Operation(summary = "Deletar usuário pelo ID")
     ResponseEntity<Void> deleteById(Long id);
 

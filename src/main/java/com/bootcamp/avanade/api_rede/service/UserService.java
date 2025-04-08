@@ -13,8 +13,6 @@ public interface UserService {
 
     List<UserResponseDTO> findAll();
 
-    User create(UserCreateDTO userToCreate);
-
     void delete(Long id);
 
     UserResponseDTO update(UserUpdateDTO userToUpdate, Long id);

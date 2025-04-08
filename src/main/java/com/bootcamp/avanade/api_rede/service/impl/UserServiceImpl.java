@@ -37,14 +37,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(UserCreateDTO userToCreate) {
-        validateUsername(userToCreate.username());
-
-        User user = userMapper.map(userToCreate);
-        return repository.save(user);
-    }
-
-    @Override
     public void delete(Long id) {
 
         findUserById(id);

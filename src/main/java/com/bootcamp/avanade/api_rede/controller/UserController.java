@@ -40,13 +40,6 @@ public class UserController implements UserControllerOpenAPI {
         return ResponseEntity.ok().body(listUsers);
     }
 
-    @PostMapping("")
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserCreateDTO userToCreate) {
-        var userCreated = service.create(userToCreate);
-        var response = UserResponseDTO.from(userCreated);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.delete(id);
