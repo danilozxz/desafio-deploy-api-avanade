@@ -1,10 +1,11 @@
 package com.bootcamp.avanade.api_rede.service.impl;
 
-import com.bootcamp.avanade.api_rede.dto.user.UserCreateDTO;
 import com.bootcamp.avanade.api_rede.dto.user.UserResponseDTO;
 import com.bootcamp.avanade.api_rede.dto.user.UserUpdateDTO;
+import com.bootcamp.avanade.api_rede.exceptions.user.EmailExistsException;
 import com.bootcamp.avanade.api_rede.exceptions.user.UserNotFoundException;
 import com.bootcamp.avanade.api_rede.exceptions.user.UsernameNullException;
+import com.bootcamp.avanade.api_rede.exceptions.user.UsernameExistsException;
 import com.bootcamp.avanade.api_rede.mapper.UserMapper;
 import com.bootcamp.avanade.api_rede.model.User;
 import com.bootcamp.avanade.api_rede.repository.UserRepository;
@@ -59,6 +60,17 @@ public class UserServiceImpl implements UserService {
     public void validateUsername(String username) {
         if(username == null || username.isEmpty()) {
             throw new UsernameNullException();
+        }
+    }
+    public void validateEmailExists(String email) {
+        if(repository.findByEmail(email) != null) {
+            throw new EmailExistsException(email);
+        }
+    }
+
+    public void validateUsernameExists(String username) {
+        if(repository.findByUsername(username) != null) {
+            throw new UsernameExistsException(username);
         }
     }
 

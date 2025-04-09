@@ -6,6 +6,7 @@ import com.bootcamp.avanade.api_rede.dto.auth.RegisterDTO;
 import com.bootcamp.avanade.api_rede.dto.user.UserResponseDTO;
 import com.bootcamp.avanade.api_rede.model.User;
 import com.bootcamp.avanade.api_rede.repository.UserRepository;
+import com.bootcamp.avanade.api_rede.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,9 @@ public class AuthenticationService {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private UserServiceImpl userService;
+
     public ResponseEntity login(AuthenticationDTO dto) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -36,7 +40,10 @@ public class AuthenticationService {
     }
 
     public ResponseEntity<UserResponseDTO> register(RegisterDTO dto){
-        if(this.repository.findByUsername(dto.username()) != null) return ResponseEntity.badRequest().build();
+
+        userService.validateUsername(dto.username());
+        userService.validateUsernameExists(dto.username());
+        userService.validateEmailExists(dto.email());
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
         User newUser = new User(dto.username(), dto.email(), encryptedPassword, dto.role());
