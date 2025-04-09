@@ -15,6 +15,46 @@ Esse projeto é uma API RestFull contruída com **Java, Spring Boot, PostgresSQL
 
 A API foi criada como parte do desafio do programa Decola Tech 2025 da Avanade e simula a dinâmica de uma rede social corporativa, permitindo a interação entre três entidades principais: **Usuário, Postagem e Comentário**.
 
+## ↗️Diagrama de classes
+
+```mermaid
+classDiagram
+direction LR
+    class Post {
+	    - Long id;
+	    - Long userId;
+	    - String description;
+        - String image;
+        - LocalDateTime publishedAt;
+        - LocalDateTime updatedAt;
+        - List<Comment> comments;
+    }
+
+    class User {
+	    - Long id;
+        - String username;
+        - String email;
+        - String password;
+        - LocalDateTime createdAt;
+        - UserRole role;
+        - List<Post> posts;
+        - List<Comment> comments;
+	    
+    }
+    
+    class Comment {
+	    - Long id;
+	    - Long postId;
+	    - Long userId;
+	    - String content;
+	    - LocalDateTime createdAt;
+    }
+
+    Post "1" *--> "N" Comment : recebe
+    User "1" *--> "N" Post : possui
+    User "1" *--> "N" Comment : escreve
+```
+
 ## 📍API Endpoints
 A API fornece os seguintes endpoints:
 
