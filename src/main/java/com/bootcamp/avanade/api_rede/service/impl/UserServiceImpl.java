@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO update(UserUpdateDTO userToUpdate, Long id) {
 
         validateUsername(userToUpdate.username());
+        validateEmailExists(userToUpdate.email());
 
         User user = findUserById(id);
 
@@ -62,6 +63,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNullException();
         }
     }
+
     public void validateEmailExists(String email) {
         if(repository.findByEmail(email) != null) {
             throw new EmailExistsException(email);
